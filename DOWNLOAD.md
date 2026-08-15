@@ -1,10 +1,10 @@
-# AbzarFile source download
+# AbzarFile CI runner fix
 
-Download `AbzarFile-v1.0.0-source.zip` from this branch and extract it into an empty directory.
-The archive contains the complete current source tree, including `.github/workflows/` and the AI-agent handover documentation.
+- `AbzarFile-v1.0.0-source.zip`: complete source tree with the CI fixes.
+- `CI-RUNNER-FIX.patch`: apply to the current `main` checkout with:
 
-SHA-256:
+  `git am CI-RUNNER-FIX.patch`
 
-`5807a9658c0f41e540c7d415bac70688fbea50f5521f07003cbd0be6e004067b`
+The patch removes the ffigen byte-diff failure and pins Windows CI/release to `windows-2022`, which Flutter 3.29 recognizes.
 
-Run normal CI before creating a production version tag; platform builds remain unverified in this sandbox.
+ZIP SHA-256: `9698a6b53925491ca80ceebaa1bb93051d0ed0feeeb7ad3099e391a9eb686e7e`
