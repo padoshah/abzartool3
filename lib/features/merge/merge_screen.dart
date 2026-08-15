@@ -65,7 +65,15 @@ class _MergeScreenState extends State<MergeScreen> {
             onReorder: (oldIndex, newIndex) {
               setState(() { if (newIndex > oldIndex) newIndex--; files.insert(newIndex, files.removeAt(oldIndex)); });
             },
-            children: files.map((file) => ListTile(key: ValueKey(file.path), leading: const Icon(Icons.drag_handle), title: Text(file.name), trailing: IconButton(icon: const Icon(Icons.close), tooltip: l10n.delete, onPressed: running ? null : () => setState(() => files.remove(file)))) .toList(growable: false),
+            children: files.map((file) => ListTile(
+              key: ValueKey(file.path),
+              leading: const Icon(Icons.drag_handle),
+              title: Text(file.name),
+              trailing: IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => setState(() => files.remove(file)),
+              ),
+            )).toList(),
           ),
         ),
         if (error != null) Text(error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error)),

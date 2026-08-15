@@ -74,10 +74,64 @@ class _ScanScreenState extends State<ScanScreen> {
           FilledButton.icon(onPressed: running ? null : camera, icon: const Icon(Icons.camera_alt), label: Text(l10n.camera)),
           OutlinedButton.icon(onPressed: running ? null : images, icon: const Icon(Icons.photo_library), label: Text(l10n.importImages)),
         ])),
-        SingleChildScrollView(scrollDirection: Axis.horizontal, child: SegmentedButton<int>(segments: <ButtonSegment<int>>[ButtonSegment(value: 0, label: Text(l10n.originalFilter)), ButtonSegment(value: 1, label: Text(l10n.grayscaleFilter)), ButtonSegment(value: 2, label: Text(l10n.blackWhiteFilter)), ButtonSegment(value: 3, label: Text(l10n.magicColorFilter))], selected: <int>{filter}, onSelectionChanged: (values) => setState(() => filter = values.first))),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SegmentedButton<int>(
+            segments: <ButtonSegment<int>>[
+              ButtonSegment(value: 0, label: Text(l10n.originalFilter)),
+              ButtonSegment(value: 1, label: Text(l10n.bwFilter)),
+              ButtonSegment(value: 2, label: Text(l10n.enhancedFilter)),
+            ],
+            selected: <int>{filter},
+            onSelectionChanged: running ? null : (selected) => setState(() => filter = selected.first),
+          ),
+        ),
         SwitchListTile(title: Text(l10n.perspectiveCorrection), value: perspective, onChanged: running ? null : (value) => setState(() => perspective = value)),
-        Row(children: <Widget>[Expanded(child: Slider(value: brightness, min: -1, max: 1, label: l10n.brightness, onChanged: running ? null : (value) => setState(() => brightness = value))), Expanded(child: Slider(value: contrast, min: .1, max: 3, label: l10n.contrast, onChanged: running ? null : (value) => setState(() => contrast = value)))]),
-        Expanded(child: ReorderableListView(onReorder: (oldIndex, newIndex) { setState(() { if (newIndex > oldIndex) newIndex--; pages.insert(newIndex, pages.removeAt(oldIndex)); }); }, children: pages.indexed.map((item) => Card(key: ValueKey(item.$2.path), child: ListTile(leading: Image.file(File(item.$2.path), width: 64, height: 64, fit: BoxFit.cover), title: Text('${l10n.pages} ${item.$1 + 1}'), trailing: IconButton(tooltip: l10n.delete, icon: const Icon(Icons.delete_outline), onPressed: running ? null : () => setState(() => pages.removeAt(item.$1))))).toList())),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: Slider(
+                value: brightness,
+                min: -1,
+                max: 1,
+                label: l10n.brightness,
+                onChanged: running ? null : (value) => setState(() => brightness = value),
+              ),
+            ),
+            Expanded(
+              child: Slider(
+                value: contrast,
+                min: 0.5,
+                max: 2,
+                label: l10n.contrast,
+                onChanged: running ? null : (value) => setState(() => contrast = value),
+              ),
+            ),
+          ],
+        ),
+        Expanded(
+          child: ReorderableListView(
+            onReorder: (oldIndex, newIndex) {
+              setState(() {
+                if (newIndex > oldIndex) newIndex--;
+                pages.insert(newIndex, pages.removeAt(oldIndex));
+              });
+            },
+            children: pages.map((page) => Card(
+              key: ValueKey(page.path),
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Image.file(File(page.path)),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => setState(() => pages.remove(page)),
+                  ),
+                ],
+              ),
+            )).toList(),
+          ),
+        ),
         if (running) const LinearProgressIndicator(),
         if (error != null) Text(error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error)),
         if (output != null) ListTile(title: Text(l10n.completed), trailing: IconButton(tooltip: l10n.open, icon: const Icon(Icons.open_in_new), onPressed: () => FileService().open(output!))),
