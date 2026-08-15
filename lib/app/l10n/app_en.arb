@@ -141,6 +141,8 @@
   "outputDirectory": "Output directory",
   "defaultQuality": "Default quality",
   "originalFilter": "Original",
+  "bwFilter": "Black & white",
+  "enhancedFilter": "Enhanced",
   "grayscaleFilter": "Grayscale",
   "blackWhiteFilter": "Black and white",
   "magicColorFilter": "Magic color",
