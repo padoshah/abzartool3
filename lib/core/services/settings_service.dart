@@ -12,7 +12,9 @@ final class AppSettings {
   final int defaultQuality;
   final String? outputDirectory;
   final bool checkUpdates;
-  AppSettings copyWith({ThemeMode? themeMode, Locale? locale, bool clearLocale = false, int? defaultDpi, int? defaultQuality, String? outputDirectory, bool clearOutputDirectory = false, bool? checkUpdates}) => AppSettings(themeMode: themeMode ?? this.themeMode, locale: clearLocale ? null : locale ?? this.locale, defaultDpi: defaultDpi ?? this.defaultDpi, defaultQuality: defaultQuality ?? this.defaultQuality, outputDirectory: clearOutputDirectory ? null : outputDirectory ?? this.outputDirectory, checkUpdates: checkUpdates ?? this.checkUpdates);
+  AppSettings copyWith({ThemeMode? themeMode, Locale? locale, bool clearLocale = false, int? defaultDpi, int? defaultQuality, String? outputDirectory, bool clearOutputDirectory = false, bool? checkUpdates}) {
+    return AppSettings(themeMode: themeMode ?? this.themeMode, locale: clearLocale ? null : locale ?? this.locale, defaultDpi: defaultDpi ?? this.defaultDpi, defaultQuality: defaultQuality ?? this.defaultQuality, outputDirectory: clearOutputDirectory ? null : outputDirectory ?? this.outputDirectory, checkUpdates: checkUpdates ?? this.checkUpdates);
+  }
 }
 
 final class SettingsController extends AsyncNotifier<AppSettings> {
@@ -23,7 +25,9 @@ final class SettingsController extends AsyncNotifier<AppSettings> {
     final localeName = prefs.getString('locale');
     return AppSettings(themeMode: theme, locale: localeName == null ? null : Locale(localeName), defaultDpi: prefs.getInt('dpi') ?? 150, defaultQuality: prefs.getInt('quality') ?? 90, outputDirectory: prefs.getString('outputDirectory'), checkUpdates: prefs.getBool('updates') ?? true);
   }
-  Future<void> update(AppSettings next) async {
+  @override
+  Future<AppSettings> update(Future<AppSettings> Function(AppSettings) cb, {Future<AppSettings> Function(Object, StackTrace)? onError}) async {
+    final next = await cb(state.valueOrNull ?? const AppSettings());
     state = AsyncData(next);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('theme', next.themeMode.name);
@@ -32,5 +36,6 @@ final class SettingsController extends AsyncNotifier<AppSettings> {
     await prefs.setInt('dpi', next.defaultDpi);
     await prefs.setInt('quality', next.defaultQuality);
     await prefs.setBool('updates', next.checkUpdates);
+    return next;
   }
 }
