@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.24) # OVERRIDE_FIND_PACKAGE (used below for zlib) needs >=3.24
 project(abzar_core VERSION 1.0.0 LANGUAGES C CXX)
 
 option(ABZAR_BUILD_TESTS "Build native structural tests" ON)
@@ -21,10 +21,21 @@ endif()
 if(NOT ZLIB_FOUND)
   include(FetchContent)
   set(ZLIB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+  # OVERRIDE_FIND_PACKAGE (CMake >=3.24) makes every later find_package(ZLIB)
+  # call anywhere in this build -- including inside nested FetchContent
+  # subbuilds like OpenCV's -- resolve to this fetched zlib instead of doing
+  # its own search. Without this, OpenCV's own find_package(ZLIB) also fails
+  # (no system zlib on this runner either) and it falls through to its own
+  # bundled 3rdparty/zlib, which unconditionally add_library(zlib ...)s and
+  # collides with the target we create below (confirmed via real CI: "add_library
+  # cannot create target 'zlib' because another target with the same name
+  # already exists"). With the override, OpenCV's own detection succeeds and
+  # it never reaches that vendoring path, so there's only ever one zlib.
   FetchContent_Declare(zlib
     GIT_REPOSITORY https://github.com/madler/zlib.git
     GIT_TAG v1.3.1
-    GIT_SHALLOW TRUE)
+    GIT_SHALLOW TRUE
+    OVERRIDE_FIND_PACKAGE)
   FetchContent_MakeAvailable(zlib)
   if(TARGET zlibstatic)
     add_library(ZLIB::ZLIB ALIAS zlibstatic)
