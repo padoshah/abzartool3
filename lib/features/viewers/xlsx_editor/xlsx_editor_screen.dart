@@ -30,7 +30,9 @@ class _XlsxEditorScreenState extends State<XlsxEditorScreen> {
     try {
       final text = await NativeOperations.extractText(files.first.path, files.first.extension);
       for (final (rowIndex, line) in text.split('\n').take(cells.length).indexed) {
-        for (final (columnIndex, value) in line.split('\t').take(cells[rowIndex].length).indexed) cells[rowIndex][columnIndex].text = value;
+        for (final (columnIndex, value) in line.split('\t').take(cells[rowIndex].length).indexed) {
+          cells[rowIndex][columnIndex].text = value;
+        }
       }
       path = files.first.path;
     } finally { if (mounted) setState(() => running = false); }
@@ -52,18 +54,50 @@ class _XlsxEditorScreenState extends State<XlsxEditorScreen> {
   }
 
   @override
-  void dispose() { for (final row in cells) { for (final cell in row) cell.dispose(); } super.dispose(); }
+  void dispose() { for (final row in cells) { for (final cell in row) { cell.dispose(); } } super.dispose(); }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.xlsxEditor), actions: <Widget>[EditorControls(onSave: running ? null : save), IconButton(tooltip: l10n.openFile, icon: const Icon(Icons.folder_open), onPressed: running ? null : open)]),
+      appBar: AppBar(
+        title: Text(l10n.xlsxEditor),
+        actions: <Widget>[
+          EditorControls(onSave: running ? null : save),
+          IconButton(tooltip: l10n.openFile, icon: const Icon(Icons.folder_open), onPressed: running ? null : open),
+        ],
+      ),
       body: Column(children: <Widget>[
         if (running) const LinearProgressIndicator(),
-        TextField(controller: cells[row][col], decoration: InputDecoration(prefixText: '${String.fromCharCode(65 + col)}${row + 1}  ', labelText: l10n.formula), onChanged: (_) => setState(() {})),
-        Expanded(child: SingleChildScrollView(scrollDirection: Axis.horizontal, child: SizedBox(width: cells.first.length * 120, child: ListView.builder(itemCount: cells.length, itemBuilder: (context, rowIndex) => SizedBox(height: 44, child: Row(children: List.generate(cells[rowIndex].length, (columnIndex) => SizedBox(width: 120, child: TextField(controller: cells[rowIndex][columnIndex], onTap: () => setState(() { row = rowIndex; col = columnIndex; }), decoration: InputDecoration(border: const OutlineInputBorder(), filled: rowIndex == row && columnIndex == col, isDense: true))))))))),
-        NavigationBar(selectedIndex: 0, destinations: <NavigationDestination>[NavigationDestination(icon: const Icon(Icons.grid_on), label: '${l10n.pages} 1'), NavigationDestination(icon: const Icon(Icons.add), label: l10n.insert)]),
+        TextField(
+          controller: cells[row][col],
+          decoration: InputDecoration(
+            prefixText: '${String.fromCharCode(65 + col)}${row + 1}  ',
+            labelText: l10n.formula,
+          ),
+          onChanged: (_) => setState(() {}),
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SizedBox(
+              width: cells.first.length * 120,
+              child: ListView.builder(
+                itemCount: cells.length,
+                itemBuilder: (context, index) => Row(
+                  children: cells[index].map((cell) => SizedBox(width: 120, child: TextField(controller: cell, onChanged: (_) => setState(() {})))).toList(),
+                ),
+              ),
+            ),
+          ),
+        ),
+        NavigationBar(
+          selectedIndex: 0,
+          destinations: <NavigationDestination>[
+            NavigationDestination(icon: const Icon(Icons.grid_on), label: '${l10n.pages} 1'),
+            NavigationDestination(icon: const Icon(Icons.grid_on), label: '${l10n.pages} 2'),
+          ],
+        ),
       ]),
     );
   }
