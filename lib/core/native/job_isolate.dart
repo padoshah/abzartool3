@@ -27,7 +27,7 @@ final class JobExecution {
   void attachHandle(int address) => _nativeAddress = address;
   void cancel() {
     final address = _nativeAddress;
-    if (address != null && !_closed) NativeLibrary.load().bindings.abz_job_cancel(ffi.Pointer<ffi.AbzJob>.fromAddress(address));
+    if (address != null && !_closed) NativeLibrary.load().bindings.abz_job_cancel(ffi.Pointer<ffi.Void>.fromAddress(address));
   }
   void close() { if (_closed) return; _closed = true; _receivePort.close(); }
   void terminate() { _isolate.kill(priority: Isolate.immediate); close(); }
