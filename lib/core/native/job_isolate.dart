@@ -7,6 +7,7 @@ import 'package:ffi/ffi.dart';
 
 import '../models/job_report.dart';
 import '../models/job_spec.dart';
+import 'abzar_bindings.g.dart';
 import 'native_error.dart';
 import 'native_library.dart';
 
@@ -27,7 +28,7 @@ final class JobExecution {
   void attachHandle(int address) => _nativeAddress = address;
   void cancel() {
     final address = _nativeAddress;
-    if (address != null && !_closed) NativeLibrary.load().bindings.abz_job_cancel(ffi.Pointer<ffi.Void>.fromAddress(address));
+    if (address != null && !_closed) NativeLibrary.load().bindings.abz_job_cancel(ffi.Pointer<AbzJob>.fromAddress(address));
   }
   void close() { if (_closed) return; _closed = true; _receivePort.close(); }
   void terminate() { _isolate.kill(priority: Isolate.immediate); close(); }

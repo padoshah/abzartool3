@@ -14,7 +14,7 @@ concurrency:
   group: release-${{ github.ref_name }}-android
   cancel-in-progress: false
 env:
-  FLUTTER_VERSION: '3.29.3'
+  FLUTTER_VERSION: '3.44.0'
 jobs:
   release:
     runs-on: ubuntu-24.04

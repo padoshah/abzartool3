@@ -19,6 +19,8 @@
   "working": "Working…",
   "retry": "Retry",
   "cancel": "Cancel",
+  "ok": "OK",
+  "documents": "Documents",
   "open": "Open",
   "share": "Share",
   "compress": "Compress",

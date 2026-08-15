@@ -5,7 +5,6 @@ import 'package:ffi/ffi.dart';
 
 import '../models/job_report.dart';
 import '../models/job_spec.dart';
-import 'abzar_bindings.g.dart';
 import 'native_error.dart';
 import 'native_library.dart';
 
