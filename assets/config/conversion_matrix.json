@@ -1,0 +1,3388 @@
+{
+  "schemaVersion": 1,
+  "formats": [
+    {
+      "id": "docx",
+      "label": "Microsoft Word",
+      "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "writable": true
+    },
+    {
+      "id": "xlsx",
+      "label": "Microsoft Excel",
+      "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "writable": true
+    },
+    {
+      "id": "pptx",
+      "label": "Microsoft PowerPoint",
+      "mime": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "writable": true
+    },
+    {
+      "id": "pdf",
+      "label": "PDF",
+      "mime": "application/pdf",
+      "writable": true
+    },
+    {
+      "id": "html",
+      "label": "HTML",
+      "mime": "text/html",
+      "writable": true
+    },
+    {
+      "id": "txt",
+      "label": "Plain text",
+      "mime": "text/plain",
+      "writable": true
+    },
+    {
+      "id": "png",
+      "label": "PNG image",
+      "mime": "image/png",
+      "writable": true
+    },
+    {
+      "id": "jpg",
+      "label": "JPEG image",
+      "mime": "image/jpeg",
+      "writable": true
+    },
+    {
+      "id": "webp",
+      "label": "WebP image",
+      "mime": "image/webp",
+      "writable": true
+    },
+    {
+      "id": "csv",
+      "label": "CSV",
+      "mime": "text/csv",
+      "writable": true
+    },
+    {
+      "id": "md",
+      "label": "Markdown",
+      "mime": "text/markdown",
+      "writable": true
+    },
+    {
+      "id": "json",
+      "label": "JSON",
+      "mime": "application/json",
+      "writable": true
+    },
+    {
+      "id": "rtf",
+      "label": "Rich Text Format",
+      "mime": "application/rtf",
+      "writable": false
+    },
+    {
+      "id": "odt",
+      "label": "OpenDocument Text",
+      "mime": "application/vnd.oasis.opendocument.text",
+      "writable": false
+    },
+    {
+      "id": "bmp",
+      "label": "Bitmap image",
+      "mime": "image/bmp",
+      "writable": false
+    },
+    {
+      "id": "tiff",
+      "label": "TIFF image",
+      "mime": "image/tiff",
+      "writable": false
+    },
+    {
+      "id": "gif",
+      "label": "GIF image",
+      "mime": "image/gif",
+      "writable": false
+    },
+    {
+      "id": "epub",
+      "label": "EPUB",
+      "mime": "application/epub+zip",
+      "writable": false
+    },
+    {
+      "id": "doc",
+      "label": "Legacy Word",
+      "mime": "application/msword",
+      "writable": false
+    },
+    {
+      "id": "xls",
+      "label": "Legacy Excel",
+      "mime": "application/vnd.ms-excel",
+      "writable": false
+    },
+    {
+      "id": "ppt",
+      "label": "Legacy PowerPoint",
+      "mime": "application/vnd.ms-powerpoint",
+      "writable": false
+    }
+  ],
+  "conversions": [
+    {
+      "source": "docx",
+      "target": "docx",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "docx",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "docx",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "docx",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "docx",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "docx",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "docx",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "docx",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "docx",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "xlsx",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xlsx",
+      "target": "xlsx",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xlsx",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xlsx",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "xlsx",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "xlsx",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xlsx",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "xlsx",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "xlsx",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "pptx",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pptx",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pptx",
+      "target": "pptx",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pptx",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "pptx",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "pptx",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pptx",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "pptx",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "pptx",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "pdf",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pdf",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pdf",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pdf",
+      "target": "pdf",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "pdf",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "pdf",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "pdf",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "pdf",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "pdf",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "html",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "html",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "html",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "html",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "html",
+      "target": "html",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "html",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "html",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "html",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "html",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "txt",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "txt",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "txt",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "txt",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "txt",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "txt",
+      "target": "txt",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "txt",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "txt",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "txt",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "png",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "png",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "png",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "png",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "png",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "png",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "png",
+      "target": "png",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "png",
+      "target": "jpg",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "png",
+      "target": "webp",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "jpg",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "jpg",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "jpg",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "jpg",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "jpg",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "jpg",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "jpg",
+      "target": "png",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "jpg",
+      "target": "jpg",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "jpg",
+      "target": "webp",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "webp",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "webp",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "webp",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "webp",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "webp",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "webp",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "webp",
+      "target": "png",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "webp",
+      "target": "jpg",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "webp",
+      "target": "webp",
+      "fidelity": "LOSSLESS",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "csv",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "csv",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "csv",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "csv",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "csv",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "csv",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "csv",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "csv",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "csv",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "md",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "md",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "md",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "md",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "md",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "md",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "md",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "md",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "md",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "json",
+      "target": "docx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "json",
+      "target": "xlsx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "json",
+      "target": "pptx",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "json",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "json",
+      "target": "html",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "json",
+      "target": "txt",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "json",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "json",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "json",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "rtf",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "rtf",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "rtf",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "rtf",
+      "target": "pdf",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "rtf",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "rtf",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "rtf",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "rtf",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "rtf",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "odt",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "odt",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "odt",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "odt",
+      "target": "pdf",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "odt",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "odt",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "odt",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "odt",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "odt",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "bmp",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "bmp",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "bmp",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "bmp",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "bmp",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "bmp",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "bmp",
+      "target": "png",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "bmp",
+      "target": "jpg",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "bmp",
+      "target": "webp",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "tiff",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "tiff",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "tiff",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "tiff",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "tiff",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "tiff",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "tiff",
+      "target": "png",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "tiff",
+      "target": "jpg",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "tiff",
+      "target": "webp",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "gif",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "gif",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "gif",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "gif",
+      "target": "pdf",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "gif",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "gif",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": true,
+      "options": []
+    },
+    {
+      "source": "gif",
+      "target": "png",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "gif",
+      "target": "jpg",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "gif",
+      "target": "webp",
+      "fidelity": "HIGH",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "epub",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "epub",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "epub",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "epub",
+      "target": "pdf",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "epub",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "epub",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "epub",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "epub",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "epub",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "doc",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "doc",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "doc",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "doc",
+      "target": "pdf",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "doc",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "doc",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "doc",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "doc",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "doc",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "xls",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xls",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xls",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xls",
+      "target": "pdf",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "xls",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "xls",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "xls",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "xls",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "xls",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "ppt",
+      "target": "docx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "ppt",
+      "target": "xlsx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "ppt",
+      "target": "pptx",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "ppt",
+      "target": "pdf",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        }
+      ]
+    },
+    {
+      "source": "ppt",
+      "target": "html",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "embedImages",
+          "type": "boolean",
+          "default": true
+        }
+      ]
+    },
+    {
+      "source": "ppt",
+      "target": "txt",
+      "fidelity": "TEXT_ONLY",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": []
+    },
+    {
+      "source": "ppt",
+      "target": "png",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "ppt",
+      "target": "jpg",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    },
+    {
+      "source": "ppt",
+      "target": "webp",
+      "fidelity": "RASTER",
+      "enabled": true,
+      "requiresOcr": false,
+      "options": [
+        {
+          "id": "dpi",
+          "type": "choice",
+          "values": [
+            72,
+            150,
+            300,
+            600
+          ],
+          "default": 150
+        },
+        {
+          "id": "quality",
+          "type": "integer",
+          "min": 1,
+          "max": 100,
+          "default": 90
+        },
+        {
+          "id": "stitchPages",
+          "type": "boolean",
+          "default": false
+        }
+      ]
+    }
+  ]
+}

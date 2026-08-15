@@ -1,0 +1,68 @@
+name: CI
+on:
+  push:
+    branches: ['**']
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+          cache: true
+      - name: Install native prerequisites
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build zlib1g-dev libtesseract-dev libleptonica-dev tesseract-ocr-eng tesseract-ocr-fas libopencv-core-dev libopencv-imgproc-dev libqpdf-dev libfreetype-dev libharfbuzz-dev
+      - name: Resolve packages and generate sources
+        run: |
+          flutter pub get
+          flutter gen-l10n
+          dart run ffigen --config ffigen.yaml
+          git diff --exit-code -- lib/core/native/abzar_bindings.g.dart
+      - name: Check Dart syntax and formatting
+        run: dart format --output=none lib test integration_test tool
+      - name: Analyze
+        run: flutter analyze
+      - name: Flutter tests
+        run: flutter test
+      - name: Build and test native core
+        run: |
+          cmake -S native -B native/build-ci -G Ninja -DABZAR_BUILD_TESTS=ON -DABZAR_ENABLE_OCR=ON
+          cmake --build native/build-ci
+          ABZAR_REQUIRE_FULL_FEATURES=1 ctest --test-dir native/build-ci --output-on-failure
+      - name: Verify matrix and release-name contract
+        run: dart run tool/verify_outputs.dart
+      - name: Build Android debug APK
+        run: flutter build apk --debug
+
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+          cache: true
+      - name: Enable Windows and resolve generated sources
+        shell: pwsh
+        run: |
+          flutter config --enable-windows-desktop
+          flutter pub get
+          flutter gen-l10n
+          dart run ffigen --config ffigen.yaml
+      - name: Analyze and test on Windows
+        run: |
+          flutter analyze
+          flutter test
+      - name: Build Windows debug bundle
+        run: flutter build windows --debug

@@ -1,0 +1,25 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
+  errors:
+    missing_required_param: error
+    missing_return: error
+    dead_code: error
+  exclude:
+    - lib/core/native/abzar_bindings.g.dart
+    - build/**
+
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_dynamic_calls: true
+    avoid_print: true
+    directives_ordering: true
+    prefer_final_locals: true
+    require_trailing_commas: true
+    sort_constructors_first: true
+    use_super_parameters: true

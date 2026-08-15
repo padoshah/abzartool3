@@ -1,0 +1,49 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+build/
+coverage/
+**/generated_plugin_registrant.*
+
+# Editors / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Native / installers
+native/build*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Output/
+installer/Output/
+*.dll
+*.so
+*.dylib
+*.exe
+*.apk
+*.aab
+
+# Signing and credentials — never commit
+key.properties
+android/key.properties
+*.jks
+*.keystore
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+*.cer
+*.mobileprovision
+.env
+.env.*
+!.env.example
+
+# Generated deliverable
+abzarfile-v*-source.zip

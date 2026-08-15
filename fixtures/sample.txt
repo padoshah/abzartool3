@@ -1,0 +1,3 @@
+AbzarFile structural conversion fixture
+Second paragraph with Persian: ابزارفایل
+42

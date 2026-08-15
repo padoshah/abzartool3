@@ -1,0 +1,127 @@
+name: Windows release
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to test, for example v1.0.0
+        required: true
+        default: v1.0.0
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref_name }}-windows
+  cancel-in-progress: false
+env:
+  FLUTTER_VERSION: '3.29.3'
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Resolve release version
+        id: version
+        shell: pwsh
+        run: |
+          $tag = '${{ github.ref_name }}'
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') { $tag = '${{ inputs.version }}' }
+          if ($tag -notmatch '^v\d+\.\d+\.\d+$') { throw 'Invalid release tag' }
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "version=$($tag.Substring(1))" >> $env:GITHUB_OUTPUT
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - name: Set version from tag
+        run: dart run tool/set_version.dart '${{ steps.version.outputs.tag }}'
+      - name: Resolve, generate, analyze, and test
+        run: |
+          flutter config --enable-windows-desktop
+          flutter pub get
+          flutter gen-l10n
+          dart run ffigen --config ffigen.yaml
+          flutter analyze
+          flutter test
+          dart run tool/verify_outputs.dart
+      - name: Build native core x64 Release
+        run: |
+          cmake -S native -B native/build-windows -A x64 -DABZAR_BUILD_TESTS=ON
+          cmake --build native/build-windows --config Release
+          ctest --test-dir native/build-windows -C Release --output-on-failure
+      - name: Build Flutter Windows x64 Release
+        run: flutter build windows --release
+      - name: Require and decode code-signing certificate
+        shell: pwsh
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.WINDOWS_SIGNING_CERTIFICATE_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:CERTIFICATE_BASE64) -or [string]::IsNullOrWhiteSpace($env:CERTIFICATE_PASSWORD)) { throw 'Required Windows signing secret is unavailable' }
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\abzarfile-signing.pfx", [Convert]::FromBase64String($env:CERTIFICATE_BASE64))
+      - name: Locate signing tool
+        id: signtool
+        shell: pwsh
+        run: |
+          $tool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Filter signtool.exe -Recurse | Where-Object FullName -Match '\\x64\\' | Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $tool) { throw 'signtool.exe not found' }
+          "path=$($tool.FullName)" >> $env:GITHUB_OUTPUT
+      - name: Sign and verify application
+        shell: pwsh
+        env:
+          CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          $exe = 'build\windows\x64\runner\Release\abzarfile.exe'
+          & '${{ steps.signtool.outputs.path }}' sign /fd SHA256 /td SHA256 /tr http://timestamp.digicert.com /f "$env:RUNNER_TEMP\abzarfile-signing.pfx" /p "$env:CERTIFICATE_PASSWORD" $exe
+          if ($LASTEXITCODE) { throw 'Application signing failed' }
+          & '${{ steps.signtool.outputs.path }}' verify /pa /v $exe
+          if ($LASTEXITCODE) { throw 'Application signature verification failed' }
+      - name: Install Inno Setup and compile installer
+        shell: pwsh
+        run: |
+          choco install innosetup --yes --no-progress
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" "/DMyAppVersion=${{ steps.version.outputs.version }}" installer\abzarfile.iss
+          if ($LASTEXITCODE) { throw 'Inno Setup compilation failed' }
+      - name: Sign and verify installer
+        shell: pwsh
+        env:
+          CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          $setup = 'installer\Output\AbzarFile-v${{ steps.version.outputs.version }}-windows-x64-setup.exe'
+          & '${{ steps.signtool.outputs.path }}' sign /fd SHA256 /td SHA256 /tr http://timestamp.digicert.com /f "$env:RUNNER_TEMP\abzarfile-signing.pfx" /p "$env:CERTIFICATE_PASSWORD" $setup
+          if ($LASTEXITCODE) { throw 'Installer signing failed' }
+          & '${{ steps.signtool.outputs.path }}' verify /pa /v $setup
+          if ($LASTEXITCODE) { throw 'Installer signature verification failed' }
+          New-Item -ItemType Directory -Force artifacts | Out-Null
+          Copy-Item $setup 'artifacts\AbzarFile-v${{ steps.version.outputs.version }}-windows-x64-setup.exe'
+          $hash = (Get-FileHash 'artifacts\AbzarFile-v${{ steps.version.outputs.version }}-windows-x64-setup.exe' -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  AbzarFile-v${{ steps.version.outputs.version }}-windows-x64-setup.exe" | Set-Content artifacts\checksums-windows.txt -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-release-${{ steps.version.outputs.version }}
+          path: artifacts/*
+          if-no-files-found: error
+      - name: Create or update GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = '${{ steps.version.outputs.tag }}'
+          for ($attempt = 1; $attempt -le 5; $attempt++) {
+            gh release view $tag 2>$null
+            if ($LASTEXITCODE -eq 0) { break }
+            gh release create $tag --title "AbzarFile $tag" --notes-file CHANGELOG.md
+            if ($LASTEXITCODE -eq 0) { break }
+            Start-Sleep -Seconds ($attempt * 3)
+          }
+          gh release view $tag
+          if ($LASTEXITCODE) { throw 'Unable to create or find release' }
+          gh release upload $tag artifacts\* --clobber
+      - name: Remove temporary signing material
+        if: always()
+        shell: pwsh
+        run: Remove-Item "$env:RUNNER_TEMP\abzarfile-signing.pfx" -Force -ErrorAction SilentlyContinue

@@ -1,0 +1,126 @@
+name: Android release
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to test, for example v1.0.0
+        required: true
+        default: v1.0.0
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref_name }}-android
+  cancel-in-progress: false
+env:
+  FLUTTER_VERSION: '3.29.3'
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Resolve release version
+        id: version
+        shell: bash
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == workflow_dispatch ]]; then TAG="${{ inputs.version }}"; fi
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 2
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - name: Install Android native tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'cmake;3.22.1' 'ndk;27.0.12077973' 'build-tools;35.0.0'
+      - name: Set version from tag
+        run: dart run tool/set_version.dart '${{ steps.version.outputs.tag }}'
+      - name: Resolve, generate, analyze, and test
+        run: |
+          flutter pub get
+          flutter gen-l10n
+          dart run ffigen --config ffigen.yaml
+          flutter analyze
+          flutter test
+          dart run tool/verify_outputs.dart
+      - name: Build native core for all Android ABIs
+        run: ./android/gradlew -p android app:externalNativeBuildRelease --no-daemon
+      - name: Require signing secrets and create temporary signing configuration
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          for value in KEYSTORE_BASE64 STORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do [[ -n "${!value:-}" ]] || { echo "Required Android signing secret is unavailable"; exit 3; }; done
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/abzarfile-release.jks"
+          chmod 600 "$RUNNER_TEMP/abzarfile-release.jks"
+          {
+            printf 'storeFile=%s\n' "$RUNNER_TEMP/abzarfile-release.jks"
+            printf 'storePassword=%s\n' "$STORE_PASSWORD"
+            printf 'keyAlias=%s\n' "$KEY_ALIAS"
+            printf 'keyPassword=%s\n' "$KEY_PASSWORD"
+          } > android/key.properties
+          chmod 600 android/key.properties
+      - name: Build signed universal APK
+        run: |
+          flutter build apk --release
+          mkdir -p artifacts
+          cp build/app/outputs/flutter-apk/app-release.apk 'artifacts/AbzarFile-v${{ steps.version.outputs.version }}-android-universal.apk'
+      - name: Build signed per-ABI APKs
+        run: |
+          flutter build apk --release --split-per-abi
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk 'artifacts/AbzarFile-v${{ steps.version.outputs.version }}-android-armeabi-v7a.apk'
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk 'artifacts/AbzarFile-v${{ steps.version.outputs.version }}-android-arm64-v8a.apk'
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk 'artifacts/AbzarFile-v${{ steps.version.outputs.version }}-android-x86_64.apk'
+      - name: Verify release signatures
+        shell: bash
+        run: |
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort -V | tail -1)"
+          [[ -x "$APKSIGNER" ]]
+          for apk in artifacts/*.apk; do
+            output="$($APKSIGNER verify --verbose --print-certs "$apk")"
+            grep -q 'Verified' <<<"$output"
+            ! grep -qi 'Android Debug' <<<"$output"
+          done
+      - name: Generate checksums
+        working-directory: artifacts
+        run: sha256sum *.apk > checksums-android.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-release-${{ steps.version.outputs.version }}
+          path: artifacts/*
+          if-no-files-found: error
+      - name: Create or update GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG='${{ steps.version.outputs.tag }}'
+          for attempt in 1 2 3 4 5; do
+            gh release view "$TAG" >/dev/null 2>&1 && break
+            gh release create "$TAG" --title "AbzarFile $TAG" --notes-file CHANGELOG.md && break
+            sleep $((attempt * 3))
+          done
+          gh release view "$TAG" >/dev/null
+          gh release upload "$TAG" artifacts/* --clobber
+      - name: Remove temporary signing material
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f "$RUNNER_TEMP/abzarfile-release.jks" ]]; then shred -u "$RUNNER_TEMP/abzarfile-release.jks" 2>/dev/null || rm -f "$RUNNER_TEMP/abzarfile-release.jks"; fi
+          if [[ -f android/key.properties ]]; then shred -u android/key.properties 2>/dev/null || rm -f android/key.properties; fi

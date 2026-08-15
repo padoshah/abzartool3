@@ -1,0 +1,3 @@
+-keep class io.flutter.** { *; }
+-keep class com.padoshah.abzarfile.** { *; }
+-dontwarn org.bouncycastle.**
