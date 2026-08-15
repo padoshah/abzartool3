@@ -20,7 +20,7 @@ jobs:
           channel: stable
           cache: true
       - name: Install native prerequisites
-        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build zlib1g-dev libtesseract-dev libleptonica-dev tesseract-ocr-eng tesseract-ocr-fas libopencv-core-dev libopencv-imgproc-dev libqpdf-dev libfreetype-dev libharfbuzz-dev
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build zlib1g-dev libtesseract-dev libleptonica-dev tesseract-ocr-eng tesseract-ocr-fas libopencv-core-dev libopencv-imgproc-dev
       - name: Resolve packages and generate sources
         run: |
           flutter pub get
@@ -65,4 +65,6 @@ jobs:
           flutter analyze
           flutter test
       - name: Build Windows debug bundle
-        run: flutter build windows --debug
+        run: flutter build windows --debug -v
+        env:
+          CMAKE_GENERATOR: "Visual Studio 17 2022"
