@@ -1,0 +1,54 @@
+name: Regenerate ffi bindings (one-off)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  regen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: stable
+          cache: true
+
+      - name: Resolve packages and regenerate bindings
+        run: |
+          flutter pub get
+          flutter gen-l10n
+          dart run ffigen --config ffigen.yaml
+
+      - name: Show what changed
+        run: |
+          git status --short
+          git diff --stat || true
+
+      - name: Commit regenerated bindings + lockfile if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add lib/core/native/abzar_bindings.g.dart pubspec.lock
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: regenerate ffi bindings + commit pubspec.lock
+
+Produced by GitHub's real Flutter 3.29.3 environment (dispatched by
+Claude), not hand-edited. Root cause of the recurring CI failure at
+'Resolve packages and generate sources': pubspec.yaml pins ffigen with
+a caret range (^16.0.0) and no pubspec.lock was committed, so each
+fresh 'flutter pub get' could resolve a different ffigen patch version
+than whatever generated the previously-committed bindings file --
+ffigen's output formatting drifts slightly between versions even when
+the C API surface is unchanged. Committing pubspec.lock alongside this
+regeneration pins every future run to the exact same versions."
+            git push origin HEAD:main
+          fi
