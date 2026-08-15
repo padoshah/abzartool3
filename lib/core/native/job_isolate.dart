@@ -27,7 +27,7 @@ final class JobExecution {
   void attachHandle(int address) => _nativeAddress = address;
   void cancel() {
     final address = _nativeAddress;
-    if (address != null && !_closed) NativeLibrary.load().bindings.abz_job_cancel(ffi.Pointer<ffi.Void>.fromAddress(address));
+    if (address != null && !_closed) NativeLibrary.load().bindings.abz_job_cancel(ffi.Pointer<ffi.AbzJob>.fromAddress(address));
   }
   void close() { if (_closed) return; _closed = true; _receivePort.close(); }
   void terminate() { _isolate.kill(priority: Isolate.immediate); close(); }
@@ -62,7 +62,7 @@ abstract final class JobIsolate {
     message.$2.send(<Object>['handle', job.address]);
     try {
       message.$2.send(<Object>['progress', .05]);
-      final callback = ffi.NativeCallable<_ProgressCallbackNative>.isolateLocal((userData, progress, stage) {
+      final callback = ffi.NativeCallable<_ProgressCallbackNative>.isolateLocal((ffi.Pointer<ffi.Void> userData, double progress, ffi.Pointer<ffi.Char> stage) {
         message.$2.send(<Object>['progress', progress, stage.cast<Utf8>().toDartString()]);
       });
       final result = bindings.abz_job_run(job, callback.nativeFunction, ffi.nullptr);
