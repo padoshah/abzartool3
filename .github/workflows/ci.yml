@@ -30,7 +30,23 @@ jobs:
       - name: Check Dart syntax and formatting
         run: dart format --output=none lib test integration_test tool
       - name: Analyze
-        run: flutter analyze
+        run: |
+          set +e
+          flutter analyze > flutter_analyze_output.txt 2>&1
+          code=$?
+          set -e
+          cat flutter_analyze_output.txt
+          dart analyze --format=machine lib test integration_test tool 2>/dev/null | while IFS='|' read -r severity type errcode file line col length message; do
+            [ -z "$severity" ] && continue
+            gh_sev="notice"
+            case "$severity" in
+              ERROR) gh_sev="error" ;;
+              WARNING) gh_sev="warning" ;;
+            esac
+            msg=$(printf '%s' "$message" | sed ':a;N;$!ba; s/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
+            echo "::${gh_sev} file=${file},line=${line},col=${col}::${errcode}: ${msg}"
+          done
+          exit $code
       - name: Flutter tests
         run: flutter test
       - name: Build and test native core
@@ -64,7 +80,43 @@ jobs:
         run: |
           flutter analyze
           flutter test
+      - name: Windows build diagnostics
+        shell: pwsh
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (Test-Path $vswhere) {
+            $installs = & $vswhere -all -products * -format json | ConvertFrom-Json
+            if ($installs.Count -eq 0) {
+              Write-Output "::warning::vswhere found no Visual Studio instances at all"
+            }
+            foreach ($inst in $installs) {
+              Write-Output "::notice::VS instance: $($inst.displayName) v$($inst.installationVersion) at $($inst.installationPath)"
+            }
+          } else {
+            Write-Output "::warning::vswhere.exe not found at $vswhere"
+          }
+          $doctor = flutter doctor -v 2>&1 | Out-String
+          $doctor -split "`n" | Where-Object { $_ -match "Visual Studio|Windows|CMake" } | ForEach-Object {
+            $line = ($_ -replace '%','%25' -replace "`r",'%0D').Trim()
+            if ($line) { Write-Output "::notice::$line" }
+          }
+
       - name: Build Windows debug bundle
-        run: flutter build windows --debug -v
+        shell: pwsh
+        run: |
+          flutter build windows --debug -v 2>&1 | Tee-Object -FilePath build_output.txt | Out-Null
+          $code = $LASTEXITCODE
+          $lines = Get-Content build_output.txt
+          for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match "CMake Error|Generator|vswhere|Could not find|error MSB") {
+              $context = $lines[$i..[Math]::Min($i+3, $lines.Count-1)] -join ' | '
+              $context = ($context -replace '%','%25' -replace "`r",'%0D')
+              Write-Output "::error::$context"
+            }
+          }
+          if ($code -ne 0) {
+            Write-Output "::error::flutter build windows failed, exit code $code"
+            exit $code
+          }
         env:
           CMAKE_GENERATOR: "Visual Studio 17 2022"
