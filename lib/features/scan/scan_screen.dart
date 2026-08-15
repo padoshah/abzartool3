@@ -70,10 +70,13 @@ class _ScanScreenState extends State<ScanScreen> {
     return FeatureScaffold(
       title: l10n.scan,
       child: Column(children: <Widget>[
-        Padding(padding: const EdgeInsets.all(16), child: Wrap(spacing: 8, children: <Widget>[
-          FilledButton.icon(onPressed: running ? null : camera, icon: const Icon(Icons.camera_alt), label: Text(l10n.camera)),
-          OutlinedButton.icon(onPressed: running ? null : images, icon: const Icon(Icons.photo_library), label: Text(l10n.importImages)),
-        ])),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Wrap(spacing: 8, children: <Widget>[
+            FilledButton.icon(onPressed: running ? null : camera, icon: const Icon(Icons.camera_alt), label: Text(l10n.camera)),
+            OutlinedButton.icon(onPressed: running ? null : images, icon: const Icon(Icons.photo_library), label: Text(l10n.importImages)),
+          ]),
+        ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: SegmentedButton<int>(
