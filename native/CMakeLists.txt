@@ -179,11 +179,18 @@ if(NOT TARGET qpdf::libqpdf AND NOT TARGET PkgConfig::QPDF)
     GIT_TAG v12.2.0
     GIT_SHALLOW TRUE)
   FetchContent_MakeAvailable(qpdf_source)
-  if(WIN32 AND TARGET libqpdf)
+  if(WIN32)
     # qpdf 12.2.0 passes a narrow string to GetEnvironmentVariableW when
     # the Windows desktop toolchain defines UNICODE. qpdf's documented
-    # compile guard keeps this optional lookup portable on MSVC.
-    target_compile_definitions(libqpdf PRIVATE NO_GET_ENVIRONMENT=1)
+    # compile guard keeps this optional lookup portable on MSVC. The source
+    # is compiled by libqpdf_object, so define it on that target as well as
+    # the final library target when present.
+    if(TARGET libqpdf_object)
+      target_compile_definitions(libqpdf_object PRIVATE NO_GET_ENVIRONMENT=1)
+    endif()
+    if(TARGET libqpdf)
+      target_compile_definitions(libqpdf PRIVATE NO_GET_ENVIRONMENT=1)
+    endif()
   endif()
 endif()
 
@@ -322,6 +329,9 @@ if(ABZAR_ENABLE_OPENCV AND OpenCV_FOUND)
   # OpenCV generates opencv_modules.hpp as part of its module targets. Make
   # that generation an explicit prerequisite so parallel Ninja builds cannot
   # compile scan.cpp before the generated header exists.
+  if(TARGET opencv_modules)
+    add_dependencies(abzar_core opencv_modules)
+  endif()
   if(TARGET opencv_core)
     add_dependencies(abzar_core opencv_core)
   endif()
