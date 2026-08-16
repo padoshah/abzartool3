@@ -108,6 +108,12 @@ if(ABZAR_ENABLE_OPENCV)
     set(WITH_GSTREAMER OFF CACHE BOOL "" FORCE)
     set(WITH_IPP OFF CACHE BOOL "" FORCE)
     set(WITH_OPENCL OFF CACHE BOOL "" FORCE)
+    # OpenCV 4.11's generated CPU-dispatch declarations are incompatible
+    # with the hosted GCC/MSVC configurations used by this project. The
+    # scalar implementation is sufficient for CI correctness and avoids
+    # compiling broken AVX/SSE dispatch translation units.
+    set(CPU_BASELINE "" CACHE STRING "" FORCE)
+    set(CPU_DISPATCH "" CACHE STRING "" FORCE)
     # OpenCV's 3rdparty deps (zlib included) are controlled by these BUILD_*
     # options, which default to "always vendor our own copy" regardless of
     # what's externally available -- OVERRIDE_FIND_PACKAGE on our own zlib
