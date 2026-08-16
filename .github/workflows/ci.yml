@@ -20,12 +20,14 @@ jobs:
           channel: stable
           cache: true
       - name: Install native prerequisites
-        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build zlib1g-dev libtesseract-dev libleptonica-dev tesseract-ocr-eng tesseract-ocr-fas libopencv-core-dev libopencv-imgproc-dev
+        run: sudo apt-get update && sudo apt-get install -y cmake ninja-build python3-numpy zlib1g-dev libjpeg-dev libssl-dev libtesseract-dev libleptonica-dev tesseract-ocr-eng tesseract-ocr-fas libopencv-core-dev libopencv-imgproc-dev
       - name: Resolve packages and generate sources
         run: |
           run_step() {
             local label="$1"; shift
-            if ! "$@" > step_output.txt 2>&1; then
+            if "$@" > step_output.txt 2>&1; then
+              :
+            else
               local ec=$?
               echo "::error::${label} failed with exit code ${ec}"
               tail -c 3000 step_output.txt | while IFS= read -r line; do
@@ -99,6 +101,17 @@ jobs:
           flutter-version: '3.44.0'
           channel: stable
           cache: true
+      - name: Install Windows native dependencies
+        shell: pwsh
+        run: |
+          $triplet = 'x64-windows'
+          & "$env:VCPKG_INSTALLATION_ROOT\vcpkg.exe" install zlib libjpeg-turbo openssl --triplet $triplet --clean-after-build
+          if ($LASTEXITCODE -ne 0) { throw "vcpkg dependency installation failed with exit code $LASTEXITCODE" }
+          $prefix = "$env:VCPKG_INSTALLATION_ROOT\installed\$triplet"
+          "CMAKE_PREFIX_PATH=$prefix" >> $env:GITHUB_ENV
+          py -3 -m pip install --disable-pip-version-check --quiet numpy
+          if ($LASTEXITCODE -ne 0) { throw "NumPy installation failed with exit code $LASTEXITCODE" }
+
       - name: Enable Windows and resolve generated sources
         shell: pwsh
         run: |

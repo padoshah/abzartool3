@@ -166,7 +166,14 @@ if(NOT TARGET qpdf::libqpdf AND NOT TARGET PkgConfig::QPDF)
   set(BUILD_DOC OFF CACHE BOOL "" FORCE)
   set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
   set(BUILD_STATIC_LIBS ON CACHE BOOL "" FORCE)
-  set(USE_IMPLICIT_CRYPTO OFF CACHE BOOL "" FORCE)
+  # qpdf otherwise disables all providers when its dependent options are
+  # evaluated inside FetchContent. Explicitly enable CI mode and native
+  # fallback so Windows builds remain portable when OpenSSL is unavailable;
+  # Linux can still select system OpenSSL when it is discoverable.
+  set(CI_MODE ON CACHE BOOL "" FORCE)
+  set(REQUIRE_CRYPTO_NATIVE ON CACHE BOOL "" FORCE)
+  set(ALLOW_CRYPTO_NATIVE ON CACHE BOOL "" FORCE)
+  set(USE_IMPLICIT_CRYPTO ON CACHE BOOL "" FORCE)
   FetchContent_Declare(qpdf_source
     GIT_REPOSITORY https://github.com/qpdf/qpdf.git
     GIT_TAG v12.2.0
