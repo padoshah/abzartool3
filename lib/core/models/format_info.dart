@@ -3,7 +3,7 @@ final class FormatInfo {
       {required this.id,
       required this.label,
       required this.mime,
-      required this.writable});
+      required this.writable,});
   factory FormatInfo.fromJson(Map<String, Object?> json) => FormatInfo(
         id: json['id']! as String,
         label: json['label']! as String,
@@ -40,19 +40,19 @@ final class ConversionCapability {
       required this.fidelity,
       required this.enabled,
       required this.requiresOcr,
-      required this.options});
+      required this.options,});
   factory ConversionCapability.fromJson(Map<String, Object?> json) =>
       ConversionCapability(
         source: json['source']! as String,
         target: json['target']! as String,
         fidelity: Fidelity.values.byName((json['fidelity']! as String)
             .toLowerCase()
-            .replaceAll('_only', 'Only')),
+            .replaceAll('_only', 'Only'),),
         enabled: json['enabled']! as bool,
         requiresOcr: json['requiresOcr']! as bool,
         options: (json['options']! as List<Object?>)
             .map((item) =>
-                ConversionOption.fromJson(item! as Map<String, Object?>))
+                ConversionOption.fromJson(item! as Map<String, Object?>),)
             .toList(growable: false),
       );
   final String source;

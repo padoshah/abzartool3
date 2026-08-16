@@ -55,9 +55,9 @@ final appRouter = GoRouter(
     GoRoute(path: '/pdf-repair', builder: (_, __) => const PdfRepairScreen()),
     GoRoute(
         path: '/pdf-objects',
-        builder: (_, __) => const PdfObjectEditorScreen()),
+        builder: (_, __) => const PdfObjectEditorScreen(),),
     GoRoute(
-        path: '/pdf-structure', builder: (_, __) => const PdfStructureScreen()),
+        path: '/pdf-structure', builder: (_, __) => const PdfStructureScreen(),),
     GoRoute(path: '/updates', builder: (_, __) => const UpdateScreen()),
     GoRoute(path: '/viewer/pdf', builder: (_, __) => const PdfViewerScreen()),
     GoRoute(path: '/viewer/docx', builder: (_, __) => const DocxEditorScreen()),
@@ -67,7 +67,7 @@ final appRouter = GoRouter(
     GoRoute(path: '/viewer/json', builder: (_, __) => const JsonEditorScreen()),
     GoRoute(path: '/viewer/html', builder: (_, __) => const HtmlEditorScreen()),
     GoRoute(
-        path: '/viewer/image', builder: (_, __) => const ImageViewerScreen()),
+        path: '/viewer/image', builder: (_, __) => const ImageViewerScreen(),),
   ],
   errorBuilder: (context, state) =>
       Scaffold(body: Center(child: Text(state.error.toString()))),

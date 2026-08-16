@@ -6,7 +6,7 @@ final class JobReport {
       required this.durationMs,
       required this.pageCount,
       required this.warningCount,
-      this.error = ''});
+      this.error = '',});
   factory JobReport.fromJson(Map<String, Object?> json) => JobReport(
         errorCode: json['errorCode']! as int,
         inputBytes: json['inputBytes']! as int,

@@ -25,7 +25,7 @@ class AbzarFileApp extends ConsumerWidget {
         debugShowCheckedModeBanner: false,
         builder: (context, child) => UpdateBootstrap(
             child:
-                OpenIntentBootstrap(child: child ?? const SizedBox.shrink())),
+                OpenIntentBootstrap(child: child ?? const SizedBox.shrink()),),
         theme: light == null
             ? AppTheme.light()
             : AppTheme.light().copyWith(colorScheme: light),
