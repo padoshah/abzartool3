@@ -15,12 +15,17 @@ final class FileService {
     for (final item in result.files) {
       final path = item.path;
       if (path == null) continue;
-      entries.add(FileEntry(path: path, name: item.name, extension: p.extension(path).replaceFirst('.', '').toLowerCase(), size: item.size));
+      entries.add(FileEntry(
+          path: path,
+          name: item.name,
+          extension: p.extension(path).replaceFirst('.', '').toLowerCase(),
+          size: item.size));
     }
     return entries;
   }
 
   Future<void> open(String path) async => OpenFilex.open(path);
-  Future<void> share(String path) async => Share.shareXFiles(<XFile>[XFile(path)]);
+  Future<void> share(String path) async =>
+      Share.shareXFiles(<XFile>[XFile(path)]);
   Future<bool> exists(String path) => File(path).exists();
 }

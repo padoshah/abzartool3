@@ -1,5 +1,12 @@
 final class JobReport {
-  const JobReport({required this.errorCode, required this.inputBytes, required this.outputBytes, required this.durationMs, required this.pageCount, required this.warningCount, this.error = ''});
+  const JobReport(
+      {required this.errorCode,
+      required this.inputBytes,
+      required this.outputBytes,
+      required this.durationMs,
+      required this.pageCount,
+      required this.warningCount,
+      this.error = ''});
   factory JobReport.fromJson(Map<String, Object?> json) => JobReport(
         errorCode: json['errorCode']! as int,
         inputBytes: json['inputBytes']! as int,

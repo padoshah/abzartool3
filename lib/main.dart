@@ -12,6 +12,7 @@ Future<void> main() async {
     await StorageService().cleanOldTemporaryFiles();
     runApp(const ProviderScope(child: AbzarFileApp()));
   }, (error, stack) {
-    FlutterError.reportError(FlutterErrorDetails(exception: error, stack: stack));
+    FlutterError.reportError(
+        FlutterErrorDetails(exception: error, stack: stack));
   });
 }

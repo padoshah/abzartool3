@@ -18,7 +18,8 @@ class XlsxEditorScreen extends StatefulWidget {
 }
 
 class _XlsxEditorScreenState extends State<XlsxEditorScreen> {
-  final cells = List.generate(40, (_) => List.generate(12, (_) => TextEditingController()));
+  final cells = List.generate(
+      40, (_) => List.generate(12, (_) => TextEditingController()));
   int row = 0, col = 0;
   bool running = false;
   String? path;
@@ -28,33 +29,61 @@ class _XlsxEditorScreenState extends State<XlsxEditorScreen> {
     if (files.isEmpty) return;
     setState(() => running = true);
     try {
-      final text = await NativeOperations.extractText(files.first.path, files.first.extension);
-      for (final (rowIndex, line) in text.split('\n').take(cells.length).indexed) {
-        for (final (columnIndex, value) in line.split('\t').take(cells[rowIndex].length).indexed) {
+      final text = await NativeOperations.extractText(
+          files.first.path, files.first.extension);
+      for (final (rowIndex, line)
+          in text.split('\n').take(cells.length).indexed) {
+        for (final (columnIndex, value)
+            in line.split('\t').take(cells[rowIndex].length).indexed) {
           cells[rowIndex][columnIndex].text = value;
         }
       }
       path = files.first.path;
-    } finally { if (mounted) setState(() => running = false); }
+    } finally {
+      if (mounted) setState(() => running = false);
+    }
   }
 
-  String _csv() => cells.map((columns) => columns.map((cell) => '"${cell.text.replaceAll('"', '""')}"').join(',')).join('\n');
+  String _csv() => cells
+      .map((columns) => columns
+          .map((cell) => '"${cell.text.replaceAll('"', '""')}"')
+          .join(','))
+      .join('\n');
 
   Future<void> save() async {
-    final output = path ?? await FilePicker.platform.saveFile(fileName: 'workbook.xlsx', type: FileType.custom, allowedExtensions: const <String>['xlsx']);
+    final output = path ??
+        await FilePicker.platform.saveFile(
+            fileName: 'workbook.xlsx',
+            type: FileType.custom,
+            allowedExtensions: const <String>['xlsx']);
     if (output == null) return;
     setState(() => running = true);
     try {
       final root = await StorageService().temporaryJobs();
-      final source = File(p.join(root.path, 'sheet-edit-${DateTime.now().microsecondsSinceEpoch}.csv'));
+      final source = File(p.join(root.path,
+          'sheet-edit-${DateTime.now().microsecondsSinceEpoch}.csv'));
       await source.writeAsString(_csv(), flush: true);
-      await NativeOperations.convert(JobSpec(inputPath: source.path, outputPath: output, sourceFormat: 'csv', targetFormat: 'xlsx'));
-      await source.delete(); path = output;
-    } finally { if (mounted) setState(() => running = false); }
+      await NativeOperations.convert(JobSpec(
+          inputPath: source.path,
+          outputPath: output,
+          sourceFormat: 'csv',
+          targetFormat: 'xlsx'));
+      await source.delete();
+      path = output;
+    } finally {
+      if (mounted) setState(() => running = false);
+    }
   }
 
   @override
-  void dispose() { for (final row in cells) { for (final cell in row) { cell.dispose(); } } super.dispose(); }
+  void dispose() {
+    for (final row in cells) {
+      for (final cell in row) {
+        cell.dispose();
+      }
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,41 +93,54 @@ class _XlsxEditorScreenState extends State<XlsxEditorScreen> {
         title: Text(l10n.xlsxEditor),
         actions: <Widget>[
           EditorControls(onSave: running ? null : save),
-          IconButton(tooltip: l10n.openFile, icon: const Icon(Icons.folder_open), onPressed: running ? null : open),
+          IconButton(
+              tooltip: l10n.openFile,
+              icon: const Icon(Icons.folder_open),
+              onPressed: running ? null : open),
         ],
       ),
-      body: Column(children: <Widget>[
-        if (running) const LinearProgressIndicator(),
-        TextField(
-          controller: cells[row][col],
-          decoration: InputDecoration(
-            prefixText: '${String.fromCharCode(65 + col)}${row + 1}  ',
-            labelText: l10n.formula,
+      body: Column(
+        children: <Widget>[
+          if (running) const LinearProgressIndicator(),
+          TextField(
+            controller: cells[row][col],
+            decoration: InputDecoration(
+              prefixText: '${String.fromCharCode(65 + col)}${row + 1}  ',
+              labelText: l10n.formula,
+            ),
+            onChanged: (_) => setState(() {}),
           ),
-          onChanged: (_) => setState(() {}),
-        ),
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SizedBox(
-              width: cells.first.length * 120,
-              child: ListView.builder(
-                itemCount: cells.length,
-                itemBuilder: (context, index) => Row(
-                  children: cells[index].map((cell) => SizedBox(width: 120, child: TextField(controller: cell, onChanged: (_) => setState(() {})))).toList(),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width: cells.first.length * 120,
+                child: ListView.builder(
+                  itemCount: cells.length,
+                  itemBuilder: (context, index) => Row(
+                    children: cells[index]
+                        .map((cell) => SizedBox(
+                            width: 120,
+                            child: TextField(
+                                controller: cell,
+                                onChanged: (_) => setState(() {}))))
+                        .toList(),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        NavigationBar(
-          selectedIndex: 0,
-          destinations: <NavigationDestination>[
-            NavigationDestination(icon: const Icon(Icons.grid_on), label: '${l10n.pages} 1'),
-            NavigationDestination(icon: const Icon(Icons.grid_on), label: '${l10n.pages} 2'),
-          ],
-        ),
-      ]),
+          NavigationBar(
+            selectedIndex: 0,
+            destinations: <NavigationDestination>[
+              NavigationDestination(
+                  icon: const Icon(Icons.grid_on), label: '${l10n.pages} 1'),
+              NavigationDestination(
+                  icon: const Icon(Icons.grid_on), label: '${l10n.pages} 2'),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

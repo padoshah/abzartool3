@@ -11,13 +11,20 @@ class AppShell extends ConsumerWidget {
   final String location;
   final Widget child;
 
-  int get selected => switch (location) { '/convert' => 1, '/toolbox' => 2, '/history' => 3, '/settings' => 4, _ => 0 };
+  int get selected => switch (location) {
+        '/convert' => 1,
+        '/toolbox' => 2,
+        '/history' => 3,
+        '/settings' => 4,
+        _ => 0
+      };
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Widget acceptDrops(Widget value) => DropTarget(
           onDragDone: (details) async {
-            await ref.read(convertControllerProvider.notifier).addDroppedFiles(details.files.map((file) => file.path).toList(growable: false));
+            await ref.read(convertControllerProvider.notifier).addDroppedFiles(
+                details.files.map((file) => file.path).toList(growable: false));
             if (context.mounted) context.go('/convert');
           },
           child: value,
@@ -33,27 +40,43 @@ class AppShell extends ConsumerWidget {
     ];
     final wide = MediaQuery.sizeOf(context).width >= 800;
     if (wide) {
-      return acceptDrops(Scaffold(
-        body: Row(children: <Widget>[
-          NavigationRail(
-            selectedIndex: selected,
-            onDestinationSelected: (index) => context.go(items[index].route),
-            labelType: NavigationRailLabelType.all,
-            leading: Padding(padding: const EdgeInsets.all(12), child: Image.asset('assets/icons/abzarfile_icon.png', width: 48, height: 48)),
-            destinations: items.map((item) => NavigationRailDestination(icon: Icon(item.icon), label: Text(item.label))).toList(growable: false),
+      return acceptDrops(
+        Scaffold(
+          body: Row(
+            children: <Widget>[
+              NavigationRail(
+                selectedIndex: selected,
+                onDestinationSelected: (index) =>
+                    context.go(items[index].route),
+                labelType: NavigationRailLabelType.all,
+                leading: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Image.asset('assets/icons/abzarfile_icon.png',
+                        width: 48, height: 48)),
+                destinations: items
+                    .map((item) => NavigationRailDestination(
+                        icon: Icon(item.icon), label: Text(item.label)))
+                    .toList(growable: false),
+              ),
+              const VerticalDivider(width: 1),
+              Expanded(child: SafeArea(child: child)),
+            ],
           ),
-          const VerticalDivider(width: 1),
-          Expanded(child: SafeArea(child: child)),
-        ]),
-      ));
+        ),
+      );
     }
-    return acceptDrops(Scaffold(
-      body: SafeArea(child: child),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selected,
-        onDestinationSelected: (index) => context.go(items[index].route),
-        destinations: items.map((item) => NavigationDestination(icon: Icon(item.icon), label: item.label)).toList(growable: false),
+    return acceptDrops(
+      Scaffold(
+        body: SafeArea(child: child),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: selected,
+          onDestinationSelected: (index) => context.go(items[index].route),
+          destinations: items
+              .map((item) => NavigationDestination(
+                  icon: Icon(item.icon), label: item.label))
+              .toList(growable: false),
+        ),
       ),
-    ));
+    );
   }
 }

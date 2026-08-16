@@ -21,7 +21,8 @@ final class NativeLibrary {
     } else if (Platform.isLinux) {
       library = DynamicLibrary.open('libabzar_core.so');
     } else {
-      throw UnsupportedError('AbzarFile native core supports Android, Windows, and Linux development tests.');
+      throw UnsupportedError(
+          'AbzarFile native core supports Android, Windows, and Linux development tests.');
     }
     final result = NativeLibrary._(AbzarBindings(library));
     if (result.bindings.abz_abi_version() != 1) {

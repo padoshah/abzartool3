@@ -29,7 +29,8 @@ class _DocxEditorScreenState extends State<DocxEditorScreen> {
     if (files.isEmpty) return;
     setState(() => running = true);
     try {
-      document.text = await NativeOperations.extractText(files.first.path, files.first.extension);
+      document.text = await NativeOperations.extractText(
+          files.first.path, files.first.extension);
       path = files.first.path;
     } finally {
       if (mounted) setState(() => running = false);
@@ -37,22 +38,29 @@ class _DocxEditorScreenState extends State<DocxEditorScreen> {
   }
 
   Future<void> save() async {
-    final output = path ?? await FilePicker.platform.saveFile(fileName: 'document.docx', type: FileType.custom, allowedExtensions: const <String>['docx']);
+    final output = path ??
+        await FilePicker.platform.saveFile(
+            fileName: 'document.docx',
+            type: FileType.custom,
+            allowedExtensions: const <String>['docx']);
     if (output == null) return;
     setState(() => running = true);
     try {
       final root = await StorageService().temporaryJobs();
-      final source = File(p.join(root.path, 'docx-edit-${DateTime.now().microsecondsSinceEpoch}.txt'));
+      final source = File(p.join(
+          root.path, 'docx-edit-${DateTime.now().microsecondsSinceEpoch}.txt'));
       await source.writeAsString(document.text, flush: true);
-      await NativeOperations.convert(JobSpec(
-        inputPath: source.path,
-        outputPath: output,
-        sourceFormat: 'txt',
-        targetFormat: 'docx',
-        applyDefaultStyle: true,
-        fontFamily: 'Noto Sans',
-        fontSize: 16,
-      ));
+      await NativeOperations.convert(
+        JobSpec(
+          inputPath: source.path,
+          outputPath: output,
+          sourceFormat: 'txt',
+          targetFormat: 'docx',
+          applyDefaultStyle: true,
+          fontFamily: 'Noto Sans',
+          fontSize: 16,
+        ),
+      );
       await source.delete();
       path = output;
     } finally {
@@ -72,13 +80,21 @@ class _DocxEditorScreenState extends State<DocxEditorScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              TextField(controller: find, decoration: InputDecoration(labelText: l10n.search)),
-              TextField(controller: replacement, decoration: InputDecoration(labelText: l10n.replace)),
+              TextField(
+                  controller: find,
+                  decoration: InputDecoration(labelText: l10n.search)),
+              TextField(
+                  controller: replacement,
+                  decoration: InputDecoration(labelText: l10n.replace)),
             ],
           ),
           actions: <Widget>[
-            TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.cancel)),
-            TextButton(onPressed: () => Navigator.pop(context, true), child: Text(l10n.ok)),
+            TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel)),
+            TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(l10n.ok)),
           ],
         );
       },
@@ -146,12 +162,16 @@ class _DocxEditorScreenState extends State<DocxEditorScreen> {
                 IconButton(
                   tooltip: l10n.textColor,
                   icon: const Icon(Icons.format_color_text),
-                  onPressed: () => setState(() => textColor = textColor == Colors.black ? Colors.blue : Colors.black),
+                  onPressed: () => setState(() => textColor =
+                      textColor == Colors.black ? Colors.blue : Colors.black),
                 ),
                 IconButton(
                   tooltip: l10n.backgroundColor,
                   icon: const Icon(Icons.format_color_fill),
-                  onPressed: () => setState(() => background = background == Colors.white ? const Color(0xfffff4d6) : Colors.white),
+                  onPressed: () => setState(() => background =
+                      background == Colors.white
+                          ? const Color(0xfffff4d6)
+                          : Colors.white),
                 ),
                 IconButton(
                   tooltip: l10n.search,
@@ -168,10 +188,14 @@ class _DocxEditorScreenState extends State<DocxEditorScreen> {
                 child: Container(
                   margin: const EdgeInsets.all(24),
                   constraints: const BoxConstraints(maxWidth: 1200),
-                  decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(8)),
+                  decoration: BoxDecoration(
+                      color: background,
+                      borderRadius: BorderRadius.circular(8)),
                   child: TextField(
                     controller: document,
-                    decoration: InputDecoration(border: InputBorder.none, contentPadding: const EdgeInsets.all(16)),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.all(16)),
                     style: style,
                     maxLines: null,
                     expands: true,

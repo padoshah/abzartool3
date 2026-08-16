@@ -28,19 +28,28 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
     if (files.isEmpty) return;
     setState(() => running = true);
     try {
-      text.text = await NativeOperations.extractText(files.first.path, files.first.extension);
+      text.text = await NativeOperations.extractText(
+          files.first.path, files.first.extension);
     } finally {
       if (mounted) setState(() => running = false);
     }
   }
 
   Future<void> save() async {
-    final output = await FilePicker.platform.saveFile(fileName: 'edited.pdf', type: FileType.custom, allowedExtensions: const <String>['pdf']);
+    final output = await FilePicker.platform.saveFile(
+        fileName: 'edited.pdf',
+        type: FileType.custom,
+        allowedExtensions: const <String>['pdf']);
     if (output == null) return;
     final root = await StorageService().temporaryJobs();
-    final source = File(p.join(root.path, 'pdf-edit-${DateTime.now().microsecondsSinceEpoch}.txt'));
+    final source = File(p.join(
+        root.path, 'pdf-edit-${DateTime.now().microsecondsSinceEpoch}.txt'));
     await source.writeAsString(text.text, flush: true);
-    await NativeOperations.convert(JobSpec(inputPath: source.path, outputPath: output, sourceFormat: 'txt', targetFormat: 'pdf'));
+    await NativeOperations.convert(JobSpec(
+        inputPath: source.path,
+        outputPath: output,
+        sourceFormat: 'txt',
+        targetFormat: 'pdf'));
     await source.delete();
   }
 

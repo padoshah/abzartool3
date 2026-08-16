@@ -2,4 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../app/l10n/app_localizations.dart';
 import '../../shared/widgets/feature_card.dart';
-class ToolboxScreen extends StatelessWidget{const ToolboxScreen({super.key});@override Widget build(BuildContext context){final l=AppLocalizations.of(context);final tools=<({IconData i,String t,String r})>[(i:Icons.call_merge,t:l.merge,r:'/merge'),(i:Icons.call_split,t:l.split,r:'/split'),(i:Icons.text_snippet,t:l.extractText,r:'/extract'),(i:Icons.picture_as_pdf,t:l.pdfTools,r:'/pdf-tools'),(i:Icons.compress,t:l.compress,r:'/compress'),(i:Icons.security,t:l.security,r:'/security'),(i:Icons.draw,t:l.esign,r:'/esign'),(i:Icons.document_scanner,t:l.scan,r:'/scan'),(i:Icons.description,t:l.docxEditor,r:'/viewer/docx'),(i:Icons.grid_on,t:l.xlsxEditor,r:'/viewer/xlsx'),(i:Icons.slideshow,t:l.pptxEditor,r:'/viewer/pptx'),(i:Icons.code,t:l.htmlEditor,r:'/viewer/html')];return CustomScrollView(slivers:<Widget>[SliverAppBar.large(title:Text(l.toolbox)),SliverPadding(padding:const EdgeInsets.all(16),sliver:SliverGrid.builder(gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:MediaQuery.sizeOf(context).width>900?4:2,childAspectRatio:1.35,crossAxisSpacing:12,mainAxisSpacing:12),itemCount:tools.length,itemBuilder:(context,index)=>FeatureCard(icon:tools[index].i,title:tools[index].t,onTap:()=>context.push(tools[index].r))))]);}}
+
+class ToolboxScreen extends StatelessWidget {
+  const ToolboxScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final tools = <({IconData i, String t, String r})>[
+      (i: Icons.call_merge, t: l.merge, r: '/merge'),
+      (i: Icons.call_split, t: l.split, r: '/split'),
+      (i: Icons.text_snippet, t: l.extractText, r: '/extract'),
+      (i: Icons.picture_as_pdf, t: l.pdfTools, r: '/pdf-tools'),
+      (i: Icons.compress, t: l.compress, r: '/compress'),
+      (i: Icons.security, t: l.security, r: '/security'),
+      (i: Icons.draw, t: l.esign, r: '/esign'),
+      (i: Icons.document_scanner, t: l.scan, r: '/scan'),
+      (i: Icons.description, t: l.docxEditor, r: '/viewer/docx'),
+      (i: Icons.grid_on, t: l.xlsxEditor, r: '/viewer/xlsx'),
+      (i: Icons.slideshow, t: l.pptxEditor, r: '/viewer/pptx'),
+      (i: Icons.code, t: l.htmlEditor, r: '/viewer/html')
+    ];
+    return CustomScrollView(slivers: <Widget>[
+      SliverAppBar.large(title: Text(l.toolbox)),
+      SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: SliverGrid.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount:
+                      MediaQuery.sizeOf(context).width > 900 ? 4 : 2,
+                  childAspectRatio: 1.35,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12),
+              itemCount: tools.length,
+              itemBuilder: (context, index) => FeatureCard(
+                  icon: tools[index].i,
+                  title: tools[index].t,
+                  onTap: () => context.push(tools[index].r))))
+    ]);
+  }
+}

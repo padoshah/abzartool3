@@ -7,13 +7,15 @@ abstract final class AppTheme {
   static ThemeData dark() => _build(Brightness.dark, const Color(0xff8fb2ff));
 
   static ThemeData _build(Brightness brightness, Color seed) {
-    final colors = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
+    final colors =
+        ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
     return ThemeData(
       useMaterial3: true,
       colorScheme: colors,
       fontFamily: 'NotoSans',
       fontFamilyFallback: const <String>['NotoSansArabic'],
-      visualDensity: Platform.isWindows ? VisualDensity.compact : VisualDensity.standard,
+      visualDensity:
+          Platform.isWindows ? VisualDensity.compact : VisualDensity.standard,
       cardTheme: CardThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -21,7 +23,8 @@ abstract final class AppTheme {
           side: BorderSide(color: colors.outlineVariant),
         ),
       ),
-      inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
+      inputDecorationTheme:
+          const InputDecorationTheme(border: OutlineInputBorder()),
       navigationRailTheme: const NavigationRailThemeData(groupAlignment: -0.8),
     );
   }

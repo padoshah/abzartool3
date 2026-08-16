@@ -17,14 +17,21 @@ class AbzarFileApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(settingsProvider).valueOrNull ?? const AppSettings();
+    final settings =
+        ref.watch(settingsProvider).valueOrNull ?? const AppSettings();
     return DynamicColorBuilder(
       builder: (light, dark) => MaterialApp.router(
         onGenerateTitle: (context) => AppLocalizations.of(context).appName,
         debugShowCheckedModeBanner: false,
-        builder: (context, child) => UpdateBootstrap(child: OpenIntentBootstrap(child: child ?? const SizedBox.shrink())),
-        theme: light == null ? AppTheme.light() : AppTheme.light().copyWith(colorScheme: light),
-        darkTheme: dark == null ? AppTheme.dark() : AppTheme.dark().copyWith(colorScheme: dark),
+        builder: (context, child) => UpdateBootstrap(
+            child:
+                OpenIntentBootstrap(child: child ?? const SizedBox.shrink())),
+        theme: light == null
+            ? AppTheme.light()
+            : AppTheme.light().copyWith(colorScheme: light),
+        darkTheme: dark == null
+            ? AppTheme.dark()
+            : AppTheme.dark().copyWith(colorScheme: dark),
         themeMode: settings.themeMode,
         locale: settings.locale,
         supportedLocales: AppLocalizations.supportedLocales,
@@ -44,7 +51,8 @@ class OpenIntentBootstrap extends ConsumerStatefulWidget {
   const OpenIntentBootstrap({required this.child, super.key});
   final Widget child;
   @override
-  ConsumerState<OpenIntentBootstrap> createState() => _OpenIntentBootstrapState();
+  ConsumerState<OpenIntentBootstrap> createState() =>
+      _OpenIntentBootstrapState();
 }
 
 class _OpenIntentBootstrapState extends ConsumerState<OpenIntentBootstrap> {
@@ -53,11 +61,14 @@ class _OpenIntentBootstrapState extends ConsumerState<OpenIntentBootstrap> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await PlatformOpenService.initialize((path) async {
-        await ref.read(convertControllerProvider.notifier).addDroppedFiles(<String>[path]);
+        await ref
+            .read(convertControllerProvider.notifier)
+            .addDroppedFiles(<String>[path]);
         if (mounted) context.go('/convert');
       });
     });
   }
+
   @override
   Widget build(BuildContext context) => widget.child;
 }

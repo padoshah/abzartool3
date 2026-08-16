@@ -17,11 +17,27 @@ class PdfToolsScreen extends StatelessWidget {
       (icon: Icons.crop, title: l10n.crop, route: '/viewer/pdf'),
       (icon: Icons.copy, title: l10n.duplicate, route: '/merge'),
       (icon: Icons.reorder, title: l10n.pages, route: '/split'),
-      (icon: Icons.image_outlined, title: l10n.imageViewer, route: '/viewer/image'),
-      (icon: Icons.text_fields, title: l10n.pdfObjectEditor, route: '/pdf-objects'),
-      (icon: Icons.branding_watermark, title: l10n.watermark, route: '/annotate'),
+      (
+        icon: Icons.image_outlined,
+        title: l10n.imageViewer,
+        route: '/viewer/image'
+      ),
+      (
+        icon: Icons.text_fields,
+        title: l10n.pdfObjectEditor,
+        route: '/pdf-objects'
+      ),
+      (
+        icon: Icons.branding_watermark,
+        title: l10n.watermark,
+        route: '/annotate'
+      ),
       (icon: Icons.numbers, title: l10n.pages, route: '/annotate'),
-      (icon: Icons.account_tree, title: l10n.pdfStructureEditor, route: '/pdf-structure'),
+      (
+        icon: Icons.account_tree,
+        title: l10n.pdfStructureEditor,
+        route: '/pdf-structure'
+      ),
       (icon: Icons.healing, title: l10n.repairPdf, route: '/pdf-repair'),
       (icon: Icons.compress, title: l10n.compress, route: '/compress'),
       (icon: Icons.draw, title: l10n.annotate, route: '/annotate'),
@@ -31,9 +47,16 @@ class PdfToolsScreen extends StatelessWidget {
       title: l10n.pdfTools,
       child: GridView.builder(
         padding: const EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: MediaQuery.sizeOf(context).width > 800 ? 4 : 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: 1.4),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: MediaQuery.sizeOf(context).width > 800 ? 4 : 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.4),
         itemCount: tools.length,
-        itemBuilder: (context, index) => FeatureCard(icon: tools[index].icon, title: tools[index].title, onTap: () => context.push(tools[index].route)),
+        itemBuilder: (context, index) => FeatureCard(
+            icon: tools[index].icon,
+            title: tools[index].title,
+            onTap: () => context.push(tools[index].route)),
       ),
     );
   }

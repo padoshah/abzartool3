@@ -23,14 +23,17 @@ abstract final class FfiBridge {
     final job = bindings.abz_job_create(json.cast<ffi.Char>());
     calloc.free(json);
     if (job == ffi.nullptr) {
-      throw const NativeException(NativeErrorCode.invalidArgument, 'Invalid native job specification.');
+      throw const NativeException(
+          NativeErrorCode.invalidArgument, 'Invalid native job specification.');
     }
     try {
-      final callback = ffi.nullptr.cast<ffi.NativeFunction<_ProgressCallbackNative>>();
+      final callback =
+          ffi.nullptr.cast<ffi.NativeFunction<_ProgressCallbackNative>>();
       final result = bindings.abz_job_run(job, callback, ffi.nullptr);
       final reportPointer = bindings.abz_job_report_json(job);
       final reportJson = reportPointer.cast<Utf8>().toDartString();
-      final report = JobReport.fromJson(jsonDecode(reportJson)! as Map<String, Object?>);
+      final report =
+          JobReport.fromJson(jsonDecode(reportJson)! as Map<String, Object?>);
       if (result != 0) {
         throw NativeException(NativeErrorCode.fromValue(result), report.error);
       }

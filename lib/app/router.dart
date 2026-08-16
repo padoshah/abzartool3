@@ -33,7 +33,8 @@ final appRouter = GoRouter(
   initialLocation: '/',
   routes: <RouteBase>[
     ShellRoute(
-      builder: (context, state, child) => AppShell(location: state.uri.path, child: child),
+      builder: (context, state, child) =>
+          AppShell(location: state.uri.path, child: child),
       routes: <RouteBase>[
         GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
         GoRoute(path: '/convert', builder: (_, __) => const ConvertScreen()),
@@ -52,8 +53,11 @@ final appRouter = GoRouter(
     GoRoute(path: '/security', builder: (_, __) => const SecurityScreen()),
     GoRoute(path: '/pdf-tools', builder: (_, __) => const PdfToolsScreen()),
     GoRoute(path: '/pdf-repair', builder: (_, __) => const PdfRepairScreen()),
-    GoRoute(path: '/pdf-objects', builder: (_, __) => const PdfObjectEditorScreen()),
-    GoRoute(path: '/pdf-structure', builder: (_, __) => const PdfStructureScreen()),
+    GoRoute(
+        path: '/pdf-objects',
+        builder: (_, __) => const PdfObjectEditorScreen()),
+    GoRoute(
+        path: '/pdf-structure', builder: (_, __) => const PdfStructureScreen()),
     GoRoute(path: '/updates', builder: (_, __) => const UpdateScreen()),
     GoRoute(path: '/viewer/pdf', builder: (_, __) => const PdfViewerScreen()),
     GoRoute(path: '/viewer/docx', builder: (_, __) => const DocxEditorScreen()),
@@ -62,7 +66,9 @@ final appRouter = GoRouter(
     GoRoute(path: '/viewer/txt', builder: (_, __) => const TxtEditorScreen()),
     GoRoute(path: '/viewer/json', builder: (_, __) => const JsonEditorScreen()),
     GoRoute(path: '/viewer/html', builder: (_, __) => const HtmlEditorScreen()),
-    GoRoute(path: '/viewer/image', builder: (_, __) => const ImageViewerScreen()),
+    GoRoute(
+        path: '/viewer/image', builder: (_, __) => const ImageViewerScreen()),
   ],
-  errorBuilder: (context, state) => Scaffold(body: Center(child: Text(state.error.toString()))),
+  errorBuilder: (context, state) =>
+      Scaffold(body: Center(child: Text(state.error.toString()))),
 );

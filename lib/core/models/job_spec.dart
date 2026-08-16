@@ -1,7 +1,21 @@
 import 'dart:convert';
 
 final class JobSpec {
-  const JobSpec({required this.inputPath, required this.outputPath, required this.sourceFormat, required this.targetFormat, this.dpi = 150, this.quality = 90, this.stitchPages = false, this.embedImages = true, this.applyDefaultStyle = false, this.fontFamily = 'Noto Sans', this.fontSize = 11, this.bold = false, this.italic = false, this.underline = false});
+  const JobSpec(
+      {required this.inputPath,
+      required this.outputPath,
+      required this.sourceFormat,
+      required this.targetFormat,
+      this.dpi = 150,
+      this.quality = 90,
+      this.stitchPages = false,
+      this.embedImages = true,
+      this.applyDefaultStyle = false,
+      this.fontFamily = 'Noto Sans',
+      this.fontSize = 11,
+      this.bold = false,
+      this.italic = false,
+      this.underline = false});
   final String inputPath;
   final String outputPath;
   final String sourceFormat;

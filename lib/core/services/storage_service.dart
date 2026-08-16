@@ -11,8 +11,11 @@ final class StorageService {
     return directory;
   }
 
-  Future<File> reserveOutput(String inputPath, String targetFormat, {String? preferredDirectory}) async {
-    final directory = preferredDirectory == null ? await temporaryJobs() : await Directory(preferredDirectory).create(recursive: true);
+  Future<File> reserveOutput(String inputPath, String targetFormat,
+      {String? preferredDirectory}) async {
+    final directory = preferredDirectory == null
+        ? await temporaryJobs()
+        : await Directory(preferredDirectory).create(recursive: true);
     final stem = p.basenameWithoutExtension(inputPath);
     var candidate = File(p.join(directory.path, '$stem.$targetFormat'));
     var index = 2;
@@ -28,7 +31,8 @@ final class StorageService {
     final threshold = DateTime.now().subtract(const Duration(days: 7));
     await for (final entity in directory.list()) {
       final stat = await entity.stat();
-      if (stat.modified.isBefore(threshold)) await entity.delete(recursive: true);
+      if (stat.modified.isBefore(threshold))
+        await entity.delete(recursive: true);
     }
   }
 }
