@@ -25,7 +25,7 @@ class ConvertScreen extends ConsumerWidget {
         FilledButton.icon(onPressed: controller.pick, icon: const Icon(Icons.add), label: Text(l10n.selectFiles)),
         const SizedBox(height: 16),
         DropdownButtonFormField<String>(
-          value: targets.any((item) => item.id == state.targetFormat) ? state.targetFormat : null,
+          initialValue: targets.any((item) => item.id == state.targetFormat) ? state.targetFormat : null,
           decoration: InputDecoration(labelText: l10n.targetFormat),
           items: targets.map((item) => DropdownMenuItem(value: item.id, child: Text('${item.label} (.${item.id})'))).toList(growable: false),
           onChanged: (value) { if (value != null) controller.setTarget(value); },

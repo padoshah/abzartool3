@@ -1,0 +1,47 @@
+name: Auto-fix lints and formatting (one-off)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.0'
+          channel: stable
+          cache: true
+
+      - name: Resolve packages
+        run: flutter pub get
+
+      - name: Apply safe automated fixes
+        run: dart fix --apply
+
+      - name: Format
+        run: dart format lib test integration_test tool
+
+      - name: Show what changed
+        run: |
+          git status --short
+          git diff --stat || true
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add lib test integration_test tool
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: apply dart fix --apply and dart format (produced by real Flutter 3.44.0, dispatched by Claude)"
+            git push origin HEAD:main
+          fi
