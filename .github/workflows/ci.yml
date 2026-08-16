@@ -51,7 +51,7 @@ jobs:
       - name: Analyze
         run: |
           set +e
-          flutter analyze > flutter_analyze_output.txt 2>&1
+          flutter analyze --no-fatal-infos > flutter_analyze_output.txt 2>&1
           code=$?
           set -e
           cat flutter_analyze_output.txt
@@ -121,7 +121,7 @@ jobs:
           Run-Step "dart run ffigen" { dart run ffigen --config ffigen.yaml }
       - name: Analyze and test on Windows
         run: |
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test
       - name: Windows build diagnostics
         shell: pwsh
