@@ -108,6 +108,15 @@ if(ABZAR_ENABLE_OPENCV)
     set(WITH_GSTREAMER OFF CACHE BOOL "" FORCE)
     set(WITH_IPP OFF CACHE BOOL "" FORCE)
     set(WITH_OPENCL OFF CACHE BOOL "" FORCE)
+    # OpenCV's 3rdparty deps (zlib included) are controlled by these BUILD_*
+    # options, which default to "always vendor our own copy" regardless of
+    # what's externally available -- OVERRIDE_FIND_PACKAGE on our own zlib
+    # FetchContent (above) has no effect here, since OpenCV's zlib detection
+    # doesn't go through a plain find_package(ZLIB) call at all. Confirmed via
+    # real CI: without this, OpenCV's bundled 3rdparty/zlib/CMakeLists.txt
+    # unconditionally add_library(zlib ...)s and collides with the zlib
+    # target we already created above.
+    set(BUILD_ZLIB OFF CACHE BOOL "" FORCE)
     FetchContent_Declare(opencv
       GIT_REPOSITORY https://github.com/opencv/opencv.git
       GIT_TAG 4.11.0

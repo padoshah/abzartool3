@@ -55,16 +55,27 @@ jobs:
           code=$?
           set -e
           cat flutter_analyze_output.txt
-          dart analyze --format=machine lib test integration_test tool 2>/dev/null | while IFS='|' read -r severity type errcode file line col length message; do
-            [ -z "$severity" ] && continue
-            gh_sev="notice"
-            case "$severity" in
-              ERROR) gh_sev="error" ;;
-              WARNING) gh_sev="warning" ;;
-            esac
-            msg=$(printf '%s' "$message" | sed ':a;N;$!ba; s/%/%25/g; s/\r/%0D/g; s/\n/%0A/g')
-            echo "::${gh_sev} file=${file},line=${line},col=${col}::${errcode}: ${msg}"
-          done
+          if [ "$code" -ne 0 ]; then
+            # flutter analyze's human-readable format is:
+            #   error/warning/info • message • file:line:col • rule_name
+            grep -E '^\s*(error|warning|info)\s•' flutter_analyze_output.txt | while IFS= read -r line; do
+              safe=$(printf '%s' "$line" | sed 's/%/%25/g; s/\r/%0D/g')
+              lvl="notice"
+              case "$line" in
+                error\ •*) lvl="error" ;;
+                warning\ •*) lvl="warning" ;;
+              esac
+              echo "::${lvl}::${safe}"
+            done
+            # Fallback: if nothing matched that pattern (format differs), emit the
+            # tail of the raw output so there's still SOMETHING to read via the API.
+            if ! grep -qE '^\s*(error|warning|info)\s•' flutter_analyze_output.txt; then
+              tail -c 3000 flutter_analyze_output.txt | while IFS= read -r line; do
+                safe=$(printf '%s' "$line" | sed 's/%/%25/g; s/\r/%0D/g')
+                echo "::error::${safe}"
+              done
+            fi
+          fi
           exit $code
       - name: Flutter tests
         run: flutter test
