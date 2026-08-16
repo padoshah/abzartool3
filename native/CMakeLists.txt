@@ -122,6 +122,10 @@ if(ABZAR_ENABLE_OPENCV)
       GIT_TAG 4.11.0
       GIT_SHALLOW TRUE)
     FetchContent_MakeAvailable(opencv)
+    # FetchContent does not always include OpenCVGenHeaders.cmake when OpenCV
+    # is embedded. Generate the same public module header explicitly.
+    set(OPENCV_CONFIG_FILE_INCLUDE_DIR "${opencv_BINARY_DIR}")
+    include("${opencv_SOURCE_DIR}/cmake/OpenCVGenHeaders.cmake")
     set(OpenCV_FOUND TRUE)
     set(OpenCV_LIBS opencv_core opencv_imgproc)
     set(OpenCV_INCLUDE_DIRS "${opencv_SOURCE_DIR}/modules/core/include;${opencv_SOURCE_DIR}/modules/imgproc/include;${opencv_BINARY_DIR}")
@@ -186,10 +190,10 @@ if(NOT TARGET qpdf::libqpdf AND NOT TARGET PkgConfig::QPDF)
     # is compiled by libqpdf_object, so define it on that target as well as
     # the final library target when present.
     if(TARGET libqpdf_object)
-      target_compile_definitions(libqpdf_object PRIVATE NO_GET_ENVIRONMENT=1)
+      target_compile_definitions(libqpdf_object PRIVATE NO_GET_ENVIRONMENT=1 AVOID_WINDOWS_HANDLE=1)
     endif()
     if(TARGET libqpdf)
-      target_compile_definitions(libqpdf PRIVATE NO_GET_ENVIRONMENT=1)
+      target_compile_definitions(libqpdf PRIVATE NO_GET_ENVIRONMENT=1 AVOID_WINDOWS_HANDLE=1)
     endif()
   endif()
 endif()
